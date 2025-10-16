@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -25,5 +25,14 @@ export class UsersService {
     const newUser = this.userRepository.create(user);
     newUser.password = await bcrypt.hash(user.password, 10);
     return this.userRepository.save(newUser);
+  }
+
+  async remove(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException(`Пользователь с id=${id} не найден`);
+    }
+    await this.userRepository.delete(id);
+    return { message: `Пользователь с id=${id} удалён` };
   }
 }
