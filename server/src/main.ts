@@ -8,5 +8,7 @@ async function bootstrap() {
   const port = configService.get<number>('APP_PORT') || 3000;
 
   await app.listen(port);
+  console.log('🚀 Сервер запущен на http://localhost:3000');
+  console.log('✅ Подключение к MySQL установлено');
 }
 bootstrap();
