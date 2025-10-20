@@ -18,6 +18,7 @@ export class PostsService {
     return this.postsRepository.find({ relations: ['author'] });
   }
 
+// Создать пост
   async create(title: string, content: string, userId: number) {
     const user = await this.usersRepository.findOneBy({ id: userId });
     if (!user) {
@@ -33,7 +34,7 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
 
-  // ✅ Метод обновления поста
+  //  Метод обновления поста
   async update(id: number, body: { title?: string; content?: string }) {
     const post = await this.postsRepository.findOne({ where: { id } });
     if (!post) throw new NotFoundException(`Post with id=${id} not found`);
@@ -42,6 +43,15 @@ export class PostsService {
     if (body.content !== undefined) post.content = body.content;
 
     return this.postsRepository.save(post);
+  }
+
+//  Удаления поста
+async remove(id: number) {
+    const post = await this.postsRepository.findOne({ where: { id } });
+    if (!post) throw new NotFoundException(`Post with id=${id} not found`);
+  
+    await this.postsRepository.remove(post);
+    return { message: `Post with id=${id} deleted successfully` };
   }
 }
 
