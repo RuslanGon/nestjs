@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostEntity } from './post.entity';
 
@@ -17,4 +17,13 @@ export class PostsController {
   create(@Body() body: { title: string; content: string; userId: number }) {
     return this.postsService.create(body.title, body.content, body.userId);
   }
+
+//   Обновления поста
+@Patch(':id')
+update(
+  @Param('id') id: string,
+  @Body() body: { title?: string; content?: string },
+) {
+  return this.postsService.update(+id, body);
+}
 }

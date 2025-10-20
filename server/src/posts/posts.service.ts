@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
@@ -29,6 +29,17 @@ export class PostsService {
       content,
       author: user,
     });
+
+    return this.postsRepository.save(post);
+  }
+
+  // ✅ Метод обновления поста
+  async update(id: number, body: { title?: string; content?: string }) {
+    const post = await this.postsRepository.findOne({ where: { id } });
+    if (!post) throw new NotFoundException(`Post with id=${id} not found`);
+
+    if (body.title !== undefined) post.title = body.title;
+    if (body.content !== undefined) post.content = body.content;
 
     return this.postsRepository.save(post);
   }
