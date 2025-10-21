@@ -5,7 +5,10 @@
   align-items: center;
   min-height: 100vh; /* занимает весь экран */
   padding: 10px;      /* небольшой отступ для маленьких экранов */
-  background: linear-gradient(135deg, #0c81ff, #0052a5);
+background-image: url('../../assets/smartAI.jpg');
+background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover;
   font-family: 'Arial', sans-serif;
   box-sizing: border-box;
 }
@@ -30,7 +33,7 @@
 .title {
   font-size: 24px;
   font-weight: 700;
-  color: #fcf0a1;
+  color: #0c81ff;
   text-align: center;
   margin-bottom: 15px;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
