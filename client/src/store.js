@@ -9,6 +9,4 @@ export const store = configureStore({
   },
 });
 
-// Чтобы типизация в TypeScript работала, можно экспортировать типы
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
+
