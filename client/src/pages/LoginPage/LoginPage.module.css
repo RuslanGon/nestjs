@@ -1,0 +1,126 @@
+/* Общий контейнер, центрирует mainDiv по всей странице */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* занимает весь экран */
+    padding: 10px;      /* небольшой отступ для маленьких экранов */
+    background: linear-gradient(135deg, #0c81ff, #0052a5);
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+  }
+  
+  /* Основной блок формы */
+  .mainDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 280px;        /* ещё меньше */
+    padding: 20px 15px;  /* уменьшен padding */
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    background: rgba(0,0,0,0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Заголовок */
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fcf0a1;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  }
+  
+  /* Форма и поля */
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;  /* уменьшен gap между полями */
+  }
+  
+  form h2 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: #ffffff;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    color: #ffffff;
+  }
+  
+  input {
+    margin-top: 3px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.5);
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 12px;
+  }
+  
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* Кнопка регистрации */
+  button[type="button"] {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background-color: #0c81ff;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #0764d6;
+  }
+  
+  /* Соцкнопки */
+  .socialButtons {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 6px 0;
+  }
+  
+  .socialButtons button {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    padding: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .socialButtons button:hover {
+    background: #fff;
+  }
+  
+  .socialButtons button img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* Подписи */
+  form p {
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  
