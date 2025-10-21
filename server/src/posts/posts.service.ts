@@ -35,23 +35,25 @@ export class PostsService {
   }
 
   //  Метод обновления поста
-  async update(id: number, body: { title?: string; content?: string }) {
-    const post = await this.postsRepository.findOne({ where: { id } });
-    if (!post) throw new NotFoundException(`Post with id=${id} not found`);
-
-    if (body.title !== undefined) post.title = body.title;
-    if (body.content !== undefined) post.content = body.content;
-
+  async update(postId: number, body: { title?: string; content?: string }, userId: number) {
+    const post = await this.postsRepository.findOne({ where: { id: postId }, relations: ['author'] });
+    if (!post) throw new Error(`Post with id=${postId} not found`);
+    if (post.author.id !== userId) throw new Error(`You are not the author of this post`);
+  
+    post.title = body.title ?? post.title;
+    post.content = body.content ?? post.content;
+  
     return this.postsRepository.save(post);
   }
 
 //  Удаления поста
-async remove(id: number) {
-    const post = await this.postsRepository.findOne({ where: { id } });
-    if (!post) throw new NotFoundException(`Post with id=${id} not found`);
-  
-    await this.postsRepository.remove(post);
-    return { message: `Post with id=${id} deleted successfully` };
-  }
+async remove(postId: number, userId: number) {
+  const post = await this.postsRepository.findOne({ where: { id: postId }, relations: ['author'] });
+  if (!post) throw new Error(`Post with id=${postId} not found`);
+  if (post.author.id !== userId) throw new Error(`You are not the author of this post`);
+
+  await this.postsRepository.delete(postId);
+  return { message: 'Post deleted' };
+}
 }
 

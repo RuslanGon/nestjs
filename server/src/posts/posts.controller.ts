@@ -1,35 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostEntity } from './post.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { User } from '../users/user.entity';
+import { GetUser } from '../auth/get-user.decorator';
 
 @Controller('posts')
 export class PostsController {
   constructor(private postsService: PostsService) {}
 
-  // Получить все посты
+  // Все посты можно получать без авторизации
   @Get()
   async findAll(): Promise<PostEntity[]> {
     return this.postsService.findAll();
   }
 
-  // Создать новый пост
+  // Создание поста — только авторизованные
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body: { title: string; content: string; userId: number }) {
-    return this.postsService.create(body.title, body.content, body.userId);
+  create(
+    @Body() body: { title: string; content: string },
+    @GetUser() user: User,
+  ) {
+    return this.postsService.create(body.title, body.content, user.id);
   }
 
-//   Обновления поста
-@Patch(':id')
-update(
-  @Param('id') id: string,
-  @Body() body: { title?: string; content?: string },
-) {
-  return this.postsService.update(+id, body);
-}
+  // Обновление поста — только авторизованные
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() body: { title?: string; content?: string },
+    @GetUser() user: User,
+  ) {
+    return this.postsService.update(+id, body, user.id);
+  }
 
- //  Удаление поста
- @Delete(':id')
- remove(@Param('id') id: string) {
-   return this.postsService.remove(+id);
- }
+  // Удаление поста — только авторизованные
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string, @GetUser() user: User) {
+    return this.postsService.remove(+id, user.id);
+  }
 }
