@@ -1,46 +1,114 @@
-import React from "react"; 
-import { Link } from 'react-router-dom';
-import logo from "../../assets/logo.jpg"; 
-import google from '../../assets/google.svg'; 
-import link from '../../assets/link.svg'; 
-import face from '../../assets/face.svg'; 
-import css from './RegisterPage.module.css'; 
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { registerUser } from "../../features/users/usersSlice";
+import google from "../../assets/google.svg";
+import link from "../../assets/link.svg";
+import face from "../../assets/face.svg";
+import css from "./RegisterPage.module.css";
 
-const RegisterPage = () => { 
+const RegisterPage = () => {
+  const dispatch = useDispatch();
+  const { loading, error, currentUser } = useSelector((state) => state.users);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(registerUser(formData));
+  };
+
   return (
-    <div className={css.container}> 
-      <div className={css.mainDiv}> 
-        <h1 className={css.title}>Your SmartLab AI</h1> 
-        <form> 
-          <h2>Register</h2> 
-          <label> 
-            Name
-            <input type="text" placeholder="Name" /> 
-          </label> 
-          <label> 
-            Email
-            <input type="email" placeholder="username@gmail.com" /> 
-          </label> 
-          <label> 
-            Password
-            <input type="password" placeholder="Password" /> 
-          </label> 
-          <button type="button">Sign Up</button> 
+    <div className={css.container}>
+      <div className={css.mainDiv}>
+        <h1 className={css.title}>Your SmartLab AI</h1>
+        <form onSubmit={handleSubmit}>
+          <h2>Register</h2>
 
-          <p>or continue with</p> 
-          <div className={css.socialButtons}> 
-            <button type="button"><img src={google} alt="google" /></button> 
-            <button type="button"><img src={link} alt="link" /></button> 
-            <button type="button"><img src={face} alt="face" /></button> 
-          </div> 
+          <label>
+            Name
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <label>
+            Email
+            <input
+              type="email"
+              name="email"
+              placeholder="username@gmail.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <label>
+            Password
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          {/* синяя кнопка — оставляем ту же разметку и классы */}
+          <button type="submit" className={css.signUpBtn}>
+            {loading ? "Registering..." : "Sign Up"}
+          </button>
+
+          {/* Сообщения о статусе */}
+          {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+          {currentUser && (
+            <p style={{ color: "lightgreen", textAlign: "center" }}>
+              User registered successfully!
+            </p>
+          )}
+
+          <p>or continue with</p>
+
+          <div className={css.socialButtons}>
+            <button type="button">
+              <img src={google} alt="google" />
+            </button>
+            <button type="button">
+              <img src={link} alt="link" />
+            </button>
+            <button type="button">
+              <img src={face} alt="face" />
+            </button>
+          </div>
 
           <p>
-            Already have an account? <Link to="/login">Login here</Link>
-          </p> 
-        </form> 
-      </div> 
+            Already have an account?{" "}
+            <Link to="/login" style={{ color: "#fcf0a1", textDecoration: "underline" }}>
+              Login here
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
-  ); 
-}; 
+  );
+};
 
 export default RegisterPage;

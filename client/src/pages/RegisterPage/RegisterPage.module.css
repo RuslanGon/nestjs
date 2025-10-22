@@ -126,3 +126,17 @@ form p {
   font-size: 11px;
   margin-top: 4px;
 }
+.signUpBtn {
+  background-color: #007bff; /* Синий */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.signUpBtn:hover {
+  background-color: #0066d1;
+}
