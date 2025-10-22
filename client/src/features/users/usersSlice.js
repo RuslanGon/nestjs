@@ -31,23 +31,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Получение данных текущего пользователя по токену
-export const fetchCurrentUser = createAsyncThunk(
-  "users/fetchCurrentUser",
-  async (_, { getState, rejectWithValue }) => {
-    const token = getState().users.token;
-    if (!token) return rejectWithValue("No token");
 
-    try {
-      const response = await axios.get("http://localhost:3000/auth/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data; // объект пользователя
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Fetch user failed");
-    }
-  }
-);
 
 const usersSlice = createSlice({
   name: "users",
@@ -97,10 +81,7 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // получение текущего пользователя
-      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-      });
+     
   },
 });
 
