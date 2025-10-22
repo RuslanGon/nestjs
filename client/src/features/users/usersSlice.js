@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// ✅ базовый URL твоего NestJS-бэкенда
 const API_URL = 'http://localhost:3000/auth';
 
 // thunk для регистрации пользователя

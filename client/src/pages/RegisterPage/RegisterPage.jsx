@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { registerUser } from "../../features/users/usersSlice";
 import google from "../../assets/google.svg";
 import link from "../../assets/link.svg";
@@ -9,6 +9,7 @@ import css from "./RegisterPage.module.css";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { loading, error, currentUser } = useSelector((state) => state.users);
 
   const [formData, setFormData] = useState({
@@ -16,6 +17,16 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      const timer = setTimeout(() => {
+        navigate("/login");
+      }, 1000); 
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -71,13 +82,9 @@ const RegisterPage = () => {
               required
             />
           </label>
-
-          {/* синяя кнопка — оставляем ту же разметку и классы */}
           <button type="submit" className={css.signUpBtn}>
             {loading ? "Registering..." : "Sign Up"}
           </button>
-
-          {/* Сообщения о статусе */}
           {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
           {currentUser && (
             <p style={{ color: "lightgreen", textAlign: "center" }}>
