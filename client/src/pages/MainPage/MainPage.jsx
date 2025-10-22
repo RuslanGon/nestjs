@@ -6,6 +6,7 @@ import css from "./MainPage.module.css";
 const MainPage = () => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.users);
+  console.log(currentUser);
 
   useEffect(() => {
     if (token && !currentUser) {
