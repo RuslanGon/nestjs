@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import css from './MainPage.module.css';
 
 const MainPage = () => {
-  const { currentUser } = useSelector((state) => state.users);
+  const currentUser = useSelector((state) => state.users.currentUser);
   console.log(currentUser);
 
   return (
