@@ -1,30 +1,51 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const API_URL = 'http://localhost:3000/auth';
+// базовый URL твоего бекенда
+const API_URL = "http://localhost:3000/auth";
 
-// thunk для регистрации пользователя
+
+// Регистрация пользователя
 export const registerUser = createAsyncThunk(
-  'users/registerUser',
+  "users/registerUser",
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/register`, userData);
-      return response.data;
+      return response.data; // обычно вернется объект user без пароля
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Registration failed');
+      return rejectWithValue(error.response?.data?.message || "Registration failed");
     }
   }
 );
 
-// слайс
+// Логин пользователя
+export const loginUser = createAsyncThunk(
+  "users/loginUser",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/login`, { email, password });
+      return response.data; // вернется { access_token: "..." }
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
 const usersSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState: {
     currentUser: null,
+    token: null,
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.currentUser = null;
+      state.token = null;
+      localStorage.removeItem("token");
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -39,7 +60,22 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.token = action.payload.access_token;
+        localStorage.setItem("token", action.payload.access_token); 
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
+export const { logout } = usersSlice.actions;
 export default usersSlice.reducer;
