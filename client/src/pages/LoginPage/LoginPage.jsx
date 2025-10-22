@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../features/users/usersSlice";
+import { loginUser, setCurrentUser } from "../../features/users/usersSlice";
 import google from "../../assets/google.svg";
 import link from "../../assets/link.svg";
 import face from "../../assets/face.svg";
@@ -10,7 +10,7 @@ import css from "./LoginPage.module.css";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, token } = useSelector((state) => state.users);
+  const { loading, error, token, currentUser } = useSelector((state) => state.users);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -21,16 +21,19 @@ const LoginPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
-  };
+    // диспатчим логин
+    const resultAction = await dispatch(loginUser(formData));
 
-  useEffect(() => {
-    if (token) {
-      navigate("/main"); 
+    // если login успешен, resultAction.payload содержит { access_token, user }
+    if (loginUser.fulfilled.match(resultAction)) {
+      // сохраняем текущего пользователя
+      dispatch(setCurrentUser(resultAction.payload.user));
+      // переходим на main
+      navigate("/main");
     }
-  }, [token, navigate]);
+  };
 
   return (
     <div className={css.container}>
