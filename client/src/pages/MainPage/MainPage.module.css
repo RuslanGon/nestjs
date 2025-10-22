@@ -1,8 +1,21 @@
-.div {
-    background-image: url('../../assets/main.jpg');
-    background-position: center; 
-    background-repeat: no-repeat; 
-    background-size: cover;
+.background {
     width: 100vw;
-  height: 100vh;
-}
+    height: 100vh;
+    background-image: url('../../assets/main.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.5); /* прозрачный фон */
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+  }
+  

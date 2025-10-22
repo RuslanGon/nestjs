@@ -1,10 +1,19 @@
-import React from 'react'
-import css from './MainPage.module.css'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import css from './MainPage.module.css';
 
 const MainPage = () => {
-  return (
-    <div className={css.div}></div>
-  )
-}
+  const { currentUser } = useSelector((state) => state.users);
+  console.log(currentUser);
 
-export default MainPage
+  return (
+    <div className={css.background}>
+      <div className={css.header}>
+        {currentUser ? `Hello, ${currentUser.name}` : 'Hello, Guest'}
+      </div>
+      {/* Можно добавить сюда остальной контент страницы */}
+    </div>
+  );
+};
+
+export default MainPage;
