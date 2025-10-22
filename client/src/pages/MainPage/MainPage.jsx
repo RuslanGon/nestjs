@@ -1,17 +1,24 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import css from './MainPage.module.css';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCurrentUser } from "../../features/users/usersSlice";
+import css from "./MainPage.module.css";
 
 const MainPage = () => {
-  const currentUser = useSelector((state) => state.users.currentUser);
-  console.log(currentUser);
+  const dispatch = useDispatch();
+  const { currentUser, token } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    if (token && !currentUser) {
+      dispatch(fetchCurrentUser());
+    }
+  }, [token, currentUser, dispatch]);
 
   return (
     <div className={css.background}>
       <div className={css.header}>
-        {currentUser ? `Hello, ${currentUser.name}` : 'Hello, Guest'}
+        {currentUser ? `Hello, ${currentUser.name}` : "Hello, Guest"}
       </div>
-      {/* Можно добавить сюда остальной контент страницы */}
+      {/* Здесь остальной контент страницы */}
     </div>
   );
 };
