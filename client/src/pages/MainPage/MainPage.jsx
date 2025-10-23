@@ -25,7 +25,7 @@ const MainPage = () => {
             <>
               <span className={css.userName}>Hello {currentUser.name}</span>
               <button className={css.logoutBtn} onClick={handleLogout}>
-                Logout
+                Log out
               </button>
             </>
           )}
