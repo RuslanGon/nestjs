@@ -74,9 +74,15 @@ const LoginPage = () => {
 
           <p>or continue with</p>
           <div className={css.socialButtons}>
-            <button type="button"><img src={google} alt="google" /></button>
-            <button type="button"><img src={link} alt="link" /></button>
-            <button type="button"><img src={face} alt="face" /></button>
+            <button type="button">
+              <img src={google} alt="google" />
+            </button>
+            <button type="button">
+              <img src={link} alt="link" />
+            </button>
+            <button type="button">
+              <img src={face} alt="face" />
+            </button>
           </div>
 
           <p>
