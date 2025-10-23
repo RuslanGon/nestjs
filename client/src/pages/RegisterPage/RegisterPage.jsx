@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../features/users/usersSlice";
 import google from "../../assets/google.svg";
 import link from "../../assets/link.svg";
@@ -10,23 +10,13 @@ import css from "./RegisterPage.module.css";
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { loading, error, currentUser } = useSelector((state) => state.users);
-
+  const { loading, error } = useSelector((state) => state.users);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-
-  useEffect(() => {
-    if (currentUser) {
-      const timer = setTimeout(() => {
-        navigate("/login");
-      }, 1000); 
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentUser, navigate]);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -35,9 +25,17 @@ const RegisterPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(formData));
+    const resultAction = await dispatch(registerUser(formData));
+
+    if (registerUser.fulfilled.match(resultAction)) {
+      setSuccess(true); // показываем сообщение об успехе
+      setFormData({ name: "", email: "", password: "" }); // очищаем поля
+      navigate("/login");
+    } else {
+      setSuccess(false);
+    }
   };
 
   return (
@@ -82,13 +80,15 @@ const RegisterPage = () => {
               required
             />
           </label>
+
           <button type="submit" className={css.signUpBtn}>
             {loading ? "Registering..." : "Sign Up"}
           </button>
+
           {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
-          {currentUser && (
+          {success && (
             <p style={{ color: "lightgreen", textAlign: "center" }}>
-              User registered successfully!
+              ✅ User registered successfully!
             </p>
           )}
 

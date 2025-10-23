@@ -31,6 +31,23 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// новый thunk — получение текущего пользователя по токену
+export const getMe = createAsyncThunk(
+  "users/getMe",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token");
+      const response = await axios.get(`${API_URL}/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch user");
+    }
+  }
+);
+
 
 
 const usersSlice = createSlice({
@@ -74,14 +91,17 @@ const usersSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.access_token;
-        state.currentUser = action.payload.user; // сохраняем пользователя
+        state.currentUser = action.payload.user; 
         localStorage.setItem("token", action.payload.access_token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-     
+      // get me
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+      });
   },
 });
 

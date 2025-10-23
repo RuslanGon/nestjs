@@ -17,18 +17,18 @@ export class UsersService {
   }
 
   async create(user: Partial<User>) {
-    const exists = await this.userRepository.findOneBy({ email: user.email });
+    const exists = await this.userRepository.findOne({ where: { email: user.email } });
     if (exists) {
       throw new BadRequestException('Пользователь с таким email уже существует');
     }
-  
+
     const newUser = this.userRepository.create(user);
     newUser.password = await bcrypt.hash(user.password, 10);
     return this.userRepository.save(newUser);
   }
 
   async remove(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`Пользователь с id=${id} не найден`);
     }
@@ -38,5 +38,15 @@ export class UsersService {
 
   async findByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } });
+  }
+
+  // ✅ Добавляем этот метод для AuthController (/auth/me)
+  async findById(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('Пользователь не найден');
+
+    // убираем пароль перед возвратом
+    const { password, ...rest } = user;
+    return rest;
   }
 }

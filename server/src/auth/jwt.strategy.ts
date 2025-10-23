@@ -13,9 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // payload — то, что мы положили в sign()
   async validate(payload: any) {
-    // возвращаем полезную информацию, она попадёт в req.user
-    return { id: payload.sub, email: payload.email };
+    // ✅ sub — стандартное поле (subject = userId)
+    return { sub: payload.sub, email: payload.email };
   }
 }
