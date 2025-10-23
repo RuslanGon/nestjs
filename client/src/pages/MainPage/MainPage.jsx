@@ -23,7 +23,7 @@ const MainPage = () => {
         <div className={css.rightPanel}>
           {currentUser && (
             <>
-              <span className={css.userName}>{currentUser.name}</span>
+              <span className={css.userName}>Hello {currentUser.name}</span>
               <button className={css.logoutBtn} onClick={handleLogout}>
                 Logout
               </button>
