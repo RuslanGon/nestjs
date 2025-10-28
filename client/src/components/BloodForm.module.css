@@ -2,12 +2,8 @@
   display: flex;
   /* justify-content: center; */
   align-items: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 10px;
-  background-image: url('../../assets/smartAI.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   font-family: 'Arial', sans-serif;
 }
 
@@ -94,3 +90,32 @@ textarea {
 .submitBtn:hover {
   background-color: #0764d6;
 }
+
+.genderGroup {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 12px;
+}
+
+.genderRow {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* расстояние между Чоловік и Жінка */
+  margin-top: 5px;
+}
+
+.genderOption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.genderOption input[type="checkbox"] {
+  accent-color: #0c81ff;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+

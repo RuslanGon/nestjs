@@ -12,11 +12,15 @@ const BloodForm = () => {
     bilirubin: "",
     cholesterol: "",
     protein: "",
-    comments: "",
+    gender: "", // новое поле
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleGenderChange = (e) => {
+    setForm({ ...form, gender: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -27,7 +31,8 @@ const BloodForm = () => {
   return (
     <div className={css.container}>
       <div className={css.mainDiv}>
-        <h1 className={css.title}>Загальний аналіз крові</h1>
+        <h1 className={css.title}>Введіть свої дані аналізу крові</h1>
+
         <form onSubmit={handleSubmit} className={css.form}>
           <div className={css.grid}>
             <label>
@@ -36,7 +41,7 @@ const BloodForm = () => {
                 name="hemoglobin"
                 value={form.hemoglobin}
                 onChange={handleChange}
-                placeholder="наприклад: 135"
+                placeholder="135"
                 required
               />
             </label>
@@ -127,6 +132,33 @@ const BloodForm = () => {
                 placeholder="72"
                 required
               />
+            </label>
+
+            <label className={css.genderGroup}>
+              Стать:
+              <div className={css.genderRow}>
+                <label className={css.genderOption}>
+                  <input
+                    type="checkbox"
+                    name="gender"
+                    value="male"
+                    checked={form.gender === "male"}
+                    onChange={() => setForm({ ...form, gender: "male" })}
+                  />
+                  Чоловік
+                </label>
+
+                <label className={css.genderOption}>
+                  <input
+                    type="checkbox"
+                    name="gender"
+                    value="female"
+                    checked={form.gender === "female"}
+                    onChange={() => setForm({ ...form, gender: "female" })}
+                  />
+                  Жінка
+                </label>
+              </div>
             </label>
           </div>
 
