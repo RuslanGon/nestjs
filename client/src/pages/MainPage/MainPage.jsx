@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../features/users/usersSlice";
 import { useNavigate } from "react-router-dom";
 import css from "./MainPage.module.css";
+import BloodForm from "../../components/BloodForm.jsx";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ const MainPage = () => {
 
   return (
     <div className={css.background}>
-      {/* Верхний прозрачный хедер */}
       <div className={css.header}>
         <div className={css.rightPanel}>
           {currentUser && (
@@ -33,6 +33,7 @@ const MainPage = () => {
       </div>
 
       {/* Здесь остальной контент страницы */}
+      <BloodForm />
     </div>
   );
 };
