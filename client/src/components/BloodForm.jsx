@@ -135,31 +135,32 @@ const BloodForm = () => {
             </label>
 
             <label className={css.genderGroup}>
-              Стать:
-              <div className={css.genderRow}>
-                <label className={css.genderOption}>
-                  <input
-                    type="checkbox"
-                    name="gender"
-                    value="male"
-                    checked={form.gender === "male"}
-                    onChange={() => setForm({ ...form, gender: "male" })}
-                  />
-                  Чоловік
-                </label>
+  Стать:
+  <div className={css.genderRow}>
+    <label className={css.genderOption}>
+      <input
+        type="radio"
+        name="gender"
+        value="male"
+        checked={form.gender === "male"}
+        onChange={() => setForm({ ...form, gender: "male" })}
+      />
+      Чоловік
+    </label>
 
-                <label className={css.genderOption}>
-                  <input
-                    type="checkbox"
-                    name="gender"
-                    value="female"
-                    checked={form.gender === "female"}
-                    onChange={() => setForm({ ...form, gender: "female" })}
-                  />
-                  Жінка
-                </label>
-              </div>
-            </label>
+    <label className={css.genderOption}>
+      <input
+        type="radio"
+        name="gender"
+        value="female"
+        checked={form.gender === "female"}
+        onChange={() => setForm({ ...form, gender: "female" })}
+      />
+      Жінка
+    </label>
+  </div>
+</label>
+
           </div>
 
           <button type="submit" className={css.submitBtn}>

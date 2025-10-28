@@ -100,22 +100,24 @@ textarea {
 
 .genderRow {
   display: flex;
-  align-items: center;
-  gap: 40px; /* расстояние между Чоловік и Жінка */
+  align-items: center;       /* выравнивание по горизонтали */
+  gap: 50px;                 /* расстояние между вариантами */
   margin-top: 5px;
 }
 
 .genderOption {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: center;       /* кружок + текст на одном уровне */
+  gap: 6px;                  /* расстояние между кружком и текстом */
   font-size: 12px;
   color: #fff;
+  line-height: 1;
 }
 
-.genderOption input[type="checkbox"] {
+.genderOption input[type="radio"] {
   accent-color: #0c81ff;
   transform: scale(1.1);
   cursor: pointer;
 }
+
 
