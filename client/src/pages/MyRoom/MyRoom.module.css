@@ -144,3 +144,14 @@ input[readonly] {
   font-size: 14px;
   padding: 20px;
 }
+
+.date {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 16px; /* чуть больше отступа от формы */
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  margin-top: 5px;
+  margin-bottom: 20px;
+}

@@ -36,13 +36,12 @@ export const MyRoom = () => {
     cholesterol: "Холестерин (ммоль/л)",
     protein: "Білок загальний (г/л)",
     gender: "Стать",
-    date: "Дата відправки",
   };
 
   // Форматируем дату для отображения
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    const date = new Date(dateString); // ISO строку JS корректно распарсит
+    const date = new Date(dateString);
     return date.toLocaleString("uk-UA", {
       day: "2-digit",
       month: "long",
@@ -77,19 +76,19 @@ export const MyRoom = () => {
       {/* Основной контент */}
       <div className={css.mainDiv}>
         <h2 className={css.title}>Ваш останній аналіз крові</h2>
+        {/* Дата и время сверху */}
+        <p className={css.date}>Дата відправки: {formatDate(lastPost.date)}</p>
+
         <form className={css.form}>
           <div className={css.grid}>
             {Object.entries(lastPost).map(([key, value]) => {
-              // Исключаем поля, которые не нужно отображать
-              if (["id", "author"].includes(key)) return null;
-
-              // Для даты используем форматирование
-              const displayValue = key === "date" ? formatDate(value) : value;
+              // Исключаем поля, которые не нужно отображать, включая дату
+              if (["id", "author", "date"].includes(key)) return null;
 
               return (
                 <label key={key}>
                   {fieldLabels[key] || key}
-                  <input type="text" value={displayValue} readOnly />
+                  <input type="text" value={value} readOnly />
                 </label>
               );
             })}
