@@ -62,7 +62,7 @@ export const MyRoom = () => {
                 Мій кабінет
               </Link>
               <Link to="/main" className={css.text1}>
-                Форма запису
+              Кабінет запису
               </Link>
               <span className={css.userName}>Hello {currentUser.name}</span>
               <button className={css.logoutBtn} onClick={handleLogout}>
