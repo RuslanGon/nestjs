@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import css from "./BloodForm.module.css";
+import { useDispatch } from "react-redux";
+import { createPost } from "../features/posts/postsSlice.js";
 
 const BloodForm = () => {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     hemoglobin: "",
     erythrocytes: "",
@@ -25,7 +28,7 @@ const BloodForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Результати аналізу:", form);
+    dispatch(createPost(form));
   };
 
   return (
