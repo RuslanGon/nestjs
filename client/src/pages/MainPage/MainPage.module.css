@@ -29,16 +29,16 @@
 
 /* Имя пользователя */
 .userName {
-  font-size: 18px;
-  font-weight: 500;
-  color: #ffffff;
-  text-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+  font-size: 24px;
+  font-weight: 700;
+  color: #007bff;
+
 }
 
 /* Кнопка выхода */
 .logoutBtn {
   background-color: rgba(255, 255, 255, 0.15);
-  color: white;
+  color: #007bff;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   padding: 8px 18px;
