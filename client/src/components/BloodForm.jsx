@@ -29,6 +29,13 @@ const BloodForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createPost(form));
+     // если успешно, сбрасываем форму
+     if (createPost.fulfilled.match(resultAction)) {
+      setForm(initialForm);
+      alert("Дані успішно відправлено!");
+    } else {
+      alert("Сталася помилка при відправці");
+    }
   };
 
   return (
