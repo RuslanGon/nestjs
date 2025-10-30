@@ -63,3 +63,14 @@
   font-size: 24px;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
 }
+
+.text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #007bff;
+  margin-right: 500px;
+}
+
+.text:hover {
+  color: #0066d1;
+}

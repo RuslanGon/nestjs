@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../features/users/usersSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import css from "./MainPage.module.css";
 import BloodForm from "../../components/BloodForm.jsx";
 
@@ -23,6 +23,7 @@ const MainPage = () => {
         <div className={css.rightPanel}>
           {currentUser && (
             <>
+            <Link to="/my-room" className={css.text}>Мій кабінет</Link>
               <span className={css.userName}>Hello {currentUser.name}</span>
               <button className={css.logoutBtn} onClick={handleLogout}>
                 Log out

@@ -8,6 +8,7 @@ import MainPage from './pages/MainPage/MainPage.jsx'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getMe } from './features/users/usersSlice.js'
+import { MyRoom } from './pages/MyRoom/MyRoom.jsx'
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
     <Route path="/main" element={<MainPage />} />
+    <Route path="/my-room" element={<MyRoom />} />
+    
 
   </Routes>
   )
