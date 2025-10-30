@@ -7,10 +7,34 @@ export class Post {
   id: number;
 
   @Column()
-  title: string;
+  hemoglobin: string;
 
-  @Column('text')
-  content: string;
+  @Column()
+  erythrocytes: string;
+
+  @Column()
+  leukocytes: string;
+
+  @Column()
+  platelets: string;
+
+  @Column()
+  hematocrit: string;
+
+  @Column()
+  glucose: string;
+
+  @Column()
+  bilirubin: string;
+
+  @Column()
+  cholesterol: string;
+
+  @Column()
+  protein: string;
+
+  @Column()
+  gender: string;
 
   @ManyToOne(() => User, (user) => user.posts, { eager: true })
   author: User;
