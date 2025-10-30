@@ -5,24 +5,25 @@ import css from "./MyRoom.module.css";
 export const MyRoom = () => {
   const lastPost = useSelector((state) => state.posts.lastPost);
 
-  if (!lastPost)
-    return <div className={css.noData}>Немає останніх даних</div>;
+  if (!lastPost) return <div className={css.myroom}>Немає останніх даних</div>;
 
   return (
     <div className={css.container}>
       <div className={css.mainDiv}>
-        <h2 className={css.title}>Ваш останній аналіз крові</h2>
+        <h2 className={css.title}>
+          Ваш останній аналіз крові
+        </h2>
+        <p className={css.date}>Дата відправки: {lastPost.date}</p>
+
         <form className={css.form}>
           <div className={css.grid}>
-            {Object.keys(lastPost).map(
-              (key) =>
-                key !== "id" &&
-                key !== "author" && (
-                  <label key={key}>
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
-                    <input type="text" value={lastPost[key]} readOnly />
-                  </label>
-                )
+            {Object.keys(lastPost).map((key) =>
+              key !== "id" && key !== "author" && key !== "date" ? (
+                <label key={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                  <input type="text" value={lastPost[key]} readOnly />
+                </label>
+              ) : null
             )}
           </div>
         </form>

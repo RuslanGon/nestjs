@@ -30,8 +30,16 @@ const BloodForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formWithDate = {
+      ...form,
+      date: new Date().toLocaleString("uk-UA", {  
+        day: "2-digit", month: "2-digit", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      }),
+    };
+
     try {
-      await dispatch(createPost(form)).unwrap();
+      await dispatch(createPost(formWithDate)).unwrap();
       setForm({
         hemoglobin: "",
         erythrocytes: "",
@@ -44,7 +52,7 @@ const BloodForm = () => {
         protein: "",
         gender: "",
       });
-      navigate("/my-room"); // ✅ переходим после успешной отправки
+      navigate("/my-room");
     } catch (error) {
       console.error("Помилка при відправці:", error);
     }
