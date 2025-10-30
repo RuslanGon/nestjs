@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../features/users/usersSlice";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,12 +10,47 @@ export const MyRoom = () => {
   const { currentUser } = useSelector((state) => state.users);
   const lastPost = useSelector((state) => state.posts.lastPost);
 
+  // Логируем lastPost для проверки
+  useEffect(() => {
+    console.log("lastPost из Redux:", lastPost);
+  }, [lastPost]);
+
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
-  if (!lastPost) return <div className={css.noData}>Немає останніх даних</div>;
+  if (!lastPost) {
+    return <div className={css.noData}>Немає останніх даних</div>;
+  }
+
+  // Красивые подписи для полей
+  const fieldLabels = {
+    hemoglobin: "Гемоглобін (г/л)",
+    erythrocytes: "Еритроцити (×10¹²/л)",
+    leukocytes: "Лейкоцити (×10⁹/л)",
+    platelets: "Тромбоцити (×10⁹/л)",
+    hematocrit: "Гематокрит (%)",
+    glucose: "Глюкоза (ммоль/л)",
+    bilirubin: "Білірубін (мкмоль/л)",
+    cholesterol: "Холестерин (ммоль/л)",
+    protein: "Білок загальний (г/л)",
+    gender: "Стать",
+    date: "Дата відправки",
+  };
+
+  // Форматируем дату для отображения
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString); // ISO строку JS корректно распарсит
+    return date.toLocaleString("uk-UA", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   return (
     <div className={css.container}>
@@ -24,8 +59,12 @@ export const MyRoom = () => {
         <div className={css.rightPanel}>
           {currentUser && (
             <>
-              <Link to="/my-room" className={css.text1}>Мій кабінет</Link>
-              <Link to="/main" className={css.text1}>Форма запису</Link>
+              <Link to="/my-room" className={css.text1}>
+                Мій кабінет
+              </Link>
+              <Link to="/main" className={css.text1}>
+                Форма запису
+              </Link>
               <span className={css.userName}>Hello {currentUser.name}</span>
               <button className={css.logoutBtn} onClick={handleLogout}>
                 Log out
@@ -38,18 +77,22 @@ export const MyRoom = () => {
       {/* Основной контент */}
       <div className={css.mainDiv}>
         <h2 className={css.title}>Ваш останній аналіз крові</h2>
-        <p className={css.date}>Дата відправки: {lastPost.date}</p>
-
         <form className={css.form}>
           <div className={css.grid}>
-            {Object.keys(lastPost).map((key) =>
-              key !== "id" && key !== "author" && key !== "date" ? (
+            {Object.entries(lastPost).map(([key, value]) => {
+              // Исключаем поля, которые не нужно отображать
+              if (["id", "author"].includes(key)) return null;
+
+              // Для даты используем форматирование
+              const displayValue = key === "date" ? formatDate(value) : value;
+
+              return (
                 <label key={key}>
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                  <input type="text" value={lastPost[key]} readOnly />
+                  {fieldLabels[key] || key}
+                  <input type="text" value={displayValue} readOnly />
                 </label>
-              ) : null
-            )}
+              );
+            })}
           </div>
         </form>
       </div>

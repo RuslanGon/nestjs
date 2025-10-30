@@ -3,6 +3,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/posts";
 
+// Получение всех постов
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
@@ -15,6 +16,7 @@ export const fetchPosts = createAsyncThunk(
   }
 );
 
+// Создание нового поста
 export const createPost = createAsyncThunk(
   "posts/createPost",
   async (formData, { rejectWithValue }) => {
@@ -30,19 +32,21 @@ export const createPost = createAsyncThunk(
   }
 );
 
+// Восстановление последнего поста из localStorage
 const savedLastPost = JSON.parse(localStorage.getItem("lastPost"));
 
 const postsSlice = createSlice({
   name: "posts",
   initialState: {
     posts: [],
-    lastPost: savedLastPost || null, // ← восстановим из localStorage
+    lastPost: savedLastPost || null,
     loading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // fetchPosts
       .addCase(fetchPosts.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -56,16 +60,27 @@ const postsSlice = createSlice({
         state.error = action.payload;
       })
 
+      // createPost
       .addCase(createPost.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.loading = false;
-        state.posts.push(action.payload);
-        state.lastPost = action.payload;
 
-        // ✅ сохраняем последний пост в localStorage
-        localStorage.setItem("lastPost", JSON.stringify(action.payload));
+        // Добавляем дату в ISO формате, если сервер её не вернул
+        const postWithDate = {
+          ...action.payload,
+          date:
+            action.payload.date ||
+            new Date().toISOString(), // ISO формат для корректного парсинга
+        };
+
+        state.posts.push(postWithDate);
+        state.lastPost = postWithDate;
+
+        // Сохраняем в localStorage
+        localStorage.setItem("lastPost", JSON.stringify(postWithDate));
       })
       .addCase(createPost.rejected, (state, action) => {
         state.loading = false;
