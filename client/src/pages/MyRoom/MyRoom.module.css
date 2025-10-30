@@ -1,7 +1,88 @@
-.myroom {
+
+.container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-family: 'Arial', sans-serif;
     background-image: url(../../assets/analiz.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh; 
-}
+  }
+  
+  .mainDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 360px;
+    padding: 20px 18px;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    background: rgba(0, 0, 0, 0.55);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0c81ff;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  }
+  
+  .form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 16px;
+    width: 100%;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    color: #ffffff;
+  }
+  
+  input {
+    margin-top: 3px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 12px;
+    outline: none;
+  }
+  
+  /* При наведении — лёгкое свечение */
+  input:hover {
+    border-color: rgba(255,255,255,0.6);
+  }
+  
+  /* Так как поля только для чтения */
+  input[readonly] {
+    cursor: default;
+    color: #cfd9e3;
+  }
+  
+  /* Если нет данных */
+  .noData {
+    color: #ccc;
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+  }
+  

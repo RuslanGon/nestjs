@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import css from "./BloodForm.module.css";
 import { useDispatch } from "react-redux";
 import { createPost } from "../features/posts/postsSlice.js";
+import { useNavigate } from "react-router-dom";
 
 const BloodForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     hemoglobin: "",
     erythrocytes: "",
@@ -26,15 +28,25 @@ const BloodForm = () => {
     setForm({ ...form, gender: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createPost(form));
-     // если успешно, сбрасываем форму
-     if (createPost.fulfilled.match(resultAction)) {
-      setForm(initialForm);
-      alert("Дані успішно відправлено!");
-    } else {
-      alert("Сталася помилка при відправці");
+    try {
+      await dispatch(createPost(form)).unwrap();
+      setForm({
+        hemoglobin: "",
+        erythrocytes: "",
+        leukocytes: "",
+        platelets: "",
+        hematocrit: "",
+        glucose: "",
+        bilirubin: "",
+        cholesterol: "",
+        protein: "",
+        gender: "",
+      });
+      navigate("/my-room"); // ✅ переходим после успешной отправки
+    } catch (error) {
+      console.error("Помилка при відправці:", error);
     }
   };
 

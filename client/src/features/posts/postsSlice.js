@@ -3,7 +3,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/posts";
 
-// Получить все анализы крови
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
@@ -16,7 +15,6 @@ export const fetchPosts = createAsyncThunk(
   }
 );
 
-// Создать новый анализ
 export const createPost = createAsyncThunk(
   "posts/createPost",
   async (formData, { rejectWithValue }) => {
@@ -32,11 +30,13 @@ export const createPost = createAsyncThunk(
   }
 );
 
+const savedLastPost = JSON.parse(localStorage.getItem("lastPost"));
+
 const postsSlice = createSlice({
   name: "posts",
   initialState: {
     posts: [],
-    lastPost: null, // сохраняем последний отправленный анализ
+    lastPost: savedLastPost || null, // ← восстановим из localStorage
     loading: false,
     error: null,
   },
@@ -55,14 +55,17 @@ const postsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
       .addCase(createPost.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.loading = false;
         state.posts.push(action.payload);
-        state.lastPost = action.payload; // сохраняем последний анализ
+        state.lastPost = action.payload;
+
+        // ✅ сохраняем последний пост в localStorage
+        localStorage.setItem("lastPost", JSON.stringify(action.payload));
       })
       .addCase(createPost.rejected, (state, action) => {
         state.loading = false;
