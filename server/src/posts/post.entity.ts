@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../users/user.entity';
+
 
 @Entity()
 export class Post {
@@ -36,6 +37,12 @@ export class Post {
   @Column()
   gender: string;
 
-  @ManyToOne(() => User, (user) => user.posts, { eager: true })
+  @ManyToOne(() => User, (user) => user.posts)
   author: User;
+
+  @CreateDateColumn()
+  createdAt: Date; // 🔹 автоматическая дата создания
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
