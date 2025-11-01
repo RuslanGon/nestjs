@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchPosts } from "../../features/posts/postsSlice";
+import { fetchPosts, deletePost } from "../../features/posts/postsSlice";
 import { logout } from "../../features/users/usersSlice";
 import { Link, useNavigate } from "react-router-dom";
 import css from "./MyRoom.module.css";
@@ -44,6 +44,18 @@ export const MyRoom = () => {
     cholesterol: "Холестерин (ммоль/л)",
     protein: "Білок загальний (г/л)",
     gender: "Стать",
+  };
+
+  const handleDelete = (id) => {
+    console.log("Deleting post with id:", id);
+    dispatch(deletePost(id))
+      .unwrap()
+      .then(() => {
+        console.log("Post deleted:", id);
+      })
+      .catch((err) => {
+        console.error("Failed to delete post:", err);
+      });
   };
 
   return (
@@ -109,6 +121,14 @@ export const MyRoom = () => {
                     );
                   })}
                 </div>
+
+                {/* Кнопка удаления */}
+                <button
+                  className={css.deleteBtn}
+                  onClick={() => handleDelete(post._id || post.id)}
+                >
+                  🗑️ Видалити
+                </button>
               </div>
             );
           })}

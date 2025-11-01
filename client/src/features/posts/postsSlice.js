@@ -32,6 +32,22 @@ export const createPost = createAsyncThunk(
   }
 );
 
+// Удаление поста
+export const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async (id, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Не вдалося видалити запис");
+    }
+  }
+);
+
 // Восстановление последнего поста из localStorage
 const savedLastPost = JSON.parse(localStorage.getItem("lastPost"));
 
@@ -53,7 +69,12 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.loading = false;
-        state.posts = action.payload;
+
+        // Обеспечиваем, чтобы у каждого поста была корректная дата
+        state.posts = action.payload.map((post) => ({
+          ...post,
+          date: post.date || post.createdAt || new Date().toISOString(),
+        }));
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
@@ -68,21 +89,32 @@ const postsSlice = createSlice({
       .addCase(createPost.fulfilled, (state, action) => {
         state.loading = false;
 
-        // Добавляем дату в ISO формате, если сервер её не вернул
         const postWithDate = {
           ...action.payload,
-          date:
-            action.payload.date ||
-            new Date().toISOString(), // ISO формат для корректного парсинга
+          date: action.payload.date || new Date().toISOString(),
         };
 
         state.posts.push(postWithDate);
         state.lastPost = postWithDate;
-
-        // Сохраняем в localStorage
         localStorage.setItem("lastPost", JSON.stringify(postWithDate));
       })
       .addCase(createPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // deletePost
+      .addCase(deletePost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.posts = state.posts.filter(
+          (post) => post._id !== action.payload && post.id !== action.payload
+        );
+      })
+      .addCase(deletePost.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
