@@ -106,21 +106,21 @@ export const MyRoom = () => {
                 </p>
 
                 <div className={css.grid}>
-                  {Object.entries(post).map(([key, value]) => {
-                    if (
-                      ["id", "_id", "author", "createdAt", "updatedAt"].includes(
-                        key
-                      )
-                    )
-                      return null;
-                    return (
-                      <label key={key}>
-                        {fieldLabels[key] || key}
-                        <input type="text" value={value} readOnly />
-                      </label>
-                    );
-                  })}
-                </div>
+  {Object.entries(post).map(([key, value]) => {
+    if (
+      ["id", "_id", "author", "createdAt", "updatedAt", "date"].includes(
+        key
+      )
+    )
+      return null;
+    return (
+      <label key={key}>
+        {fieldLabels[key] || key}
+        <input type="text" value={value} readOnly />
+      </label>
+    );
+  })}
+</div>
 
                 {/* Кнопка удаления */}
                 <button
